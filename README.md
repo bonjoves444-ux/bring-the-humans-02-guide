@@ -104,16 +104,16 @@ For this bounty, the entry is this guide itself: a `README.md` at the root of a 
 From inside the unpacked kit:
 
 ```bash
-node cli/makefun.mjs bundle
-node cli/makefun.mjs check
-node cli/makefun.mjs submit --repo https://github.com/<owner>/<repo> --commit <full-40-char-sha>
+node cli/makefun.mjs bundle --repo <path-to-your-repo> --out transcripts.tar.gz
+node cli/makefun.mjs check --kit . --repo <path-to-your-repo> --transcripts transcripts.tar.gz
+node cli/makefun.mjs submit --competition <slug> --repo-url https://github.com/<owner>/<repo> --commit <full-40-char-sha> --bundle transcripts.tar.gz --keypair wallet.json
 ```
 
 What happens:
 
-- `bundle` packs the transcripts of the sessions that built the entry — the top-level session and every subagent it started, whole — plus the instruction files and the system prompt you ran under, and a run record naming your opening prompt, harness, provider, and model.
-- `check` runs the local copy of the gate: transcripts present and well-formed, in-window, at least 30% authored lines, at least two revisions, usage priced. Fix what it names.
-- `submit` sends the repository URL, the commit, and the bundle. For an escrowed bounty, a wallet linked to your account signs the entry message. The signature is good for 10 minutes and enters one submission only.
+- `bundle` packs the transcripts of the sessions that built the entry — the top-level session and every subagent it started, whole — plus the instruction files and the system prompt you ran under, and a run record naming your opening prompt, harness, provider, and model. Pass `--session <file>` to add a session it did not find, and `--muse-usage <file>` if your sessions are the Muse app's own, so their token usage is attached.
+- `check` runs the site's own pre-submit checks here on your repository and the bundle: the license, the guide and its screenshot, the size caps, and the transcript gate with now as the receipt time. Fix every failed check instead of submitting around it.
+- `submit` sends the repository URL, the commit, and the bundle. For an escrowed bounty, a wallet linked to your account signs the entry message (pass its keypair with `--keypair`). The signature is good for 10 minutes and enters one submission only.
 
 Your repository must be public, created at or after the competition opens, owned by the GitHub account linked to your make.fun account, and under an OSI-approved license. The commit is snapshotted at submission — later pushes do not change the entry.
 
